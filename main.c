@@ -1,6 +1,8 @@
 #include <stdio.h>
 
+void initializeFleet();
 void displayMenu();
+
 #define CATEGORIES 4
 #define MAX_VEHICLES 15
 
@@ -23,6 +25,7 @@ double securityDeposit[4]= {
 };
 int main()
 {
+    initializeFleet();
     displayMenu();
 
     return 0;
@@ -38,4 +41,15 @@ void displayMenu()
     printf("4.Sort Rental by Oriority\n");
     printf("5.View reports\n");
     printf("6.Exit\n");
+}
+
+void initializeFleet()
+{
+    for (int i = 0;i<CATEGORIES;i++)
+    {
+        for (int j = 0;j<fleetLimit[i];j++)
+        {
+            fleetAvailability[i][j] = 0;
+        }
+    }
 }
