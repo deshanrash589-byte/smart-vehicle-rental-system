@@ -1,8 +1,26 @@
 #include <stdio.h>
 
 void displayMenu();
+#define CATEGORIES 4
+#define MAX_VEHICLES 15
 
+int fleetAvailability[CATEGORIES][MAX_VEHICLES];
 
+int fleetLimit[4]={15,10,8,5};
+
+double dailyRate[4]={
+   5000,
+   10000,
+   22000,
+   16000
+};
+
+double securityDeposit[4]= {
+   15000,
+   30000,
+   50000,
+   40000
+};
 int main()
 {
     displayMenu();
