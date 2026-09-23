@@ -23,6 +23,23 @@ double securityDeposit[4]= {
    50000,
    40000
 };
+char customerNames[100][50];
+char nicPassport[100][30];
+char licenseNumber[100][30];
+
+
+int selectedCategory[100];
+int rentalDays[100];
+int driverOpted[100];
+
+double finalBills[100];
+
+int customerCount = 0;
+
+void displayMenu();
+void initializeFleet();
+void registerRental();
+
 int main()
 {
     initializeFleet();
@@ -52,4 +69,28 @@ void initializeFleet()
             fleetAvailability[i][j] = 0;
         }
     }
+}
+
+void registerRental()
+{
+    printf("\n===== CUSTOMER REGISTRATION =====\n");
+
+    printf("Enter customer full name:");
+    scanf("%[^\n]",customerNames[customerCount]);
+
+    printf("Enter NIC / Passport number:");
+    scanf("%29s",nicPassport[customerCount]);
+
+    printf("Enter driving license number:");
+    scanf("%29s",licenseNumber[customerCount]);
+
+    printf("Enter vehical category (1-4):");
+    scanf("%d",&selectedCategory[customerCount]);
+
+    printf("Enter rental days:");
+    scanf("%d",&rentalDays[customerCount]);
+
+    printf("Include driver?(1=Yes,0=No):");
+    scanf("%d",&driverOpted[customerCount]);
+
 }
