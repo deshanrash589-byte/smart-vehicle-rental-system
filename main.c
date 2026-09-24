@@ -41,6 +41,7 @@ void initializeFleet();
 void registerRental();
 double calculateBill(int category,int days,int driver);
 void displayRentalRecords();
+void displayFleetStatus();
 
 int main()
 {
@@ -80,7 +81,7 @@ void displayMenu()
             break;
 
           case 3:
-            printf("Display Fleet Status Selected.\n");
+            displayFleetStatus();
             break;
 
           case 4:
@@ -286,4 +287,40 @@ void displayRentalRecords()
     }
 
     printf("\n=====================================\n");
+}
+
+
+void displayFleetStatus()
+{
+    int available;
+    int rented;
+
+    printf("\n========== FLEET STATUS ==========\n");
+
+    for (int i = 0;i < CATEGORIES; i++)
+    {
+        available = 0;
+        rented = 0;
+
+        for (int j = 0; j < fleetLimit[i];j++)
+        {
+            if (fleetAvailability[i][j] == 0)
+            {
+                available++;
+            }
+            else
+            {
+                rented++;
+            }
+        }
+
+
+        printf("\nCategory %d\n",i + 1);
+        printf("Total Vehicals       :%d\n",fleetLimit[i]);
+        printf("Available Vehicals   :%d\n",available);
+        printf("Rented Vehicals      :%d\n",rented);
+
+    }
+
+   printf("\n=====================================\n");
 }
