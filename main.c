@@ -39,6 +39,8 @@ int customerCount = 0;
 void displayMenu();
 void initializeFleet();
 void registerRental();
+double calculateBill(int category,int days,int driver);
+void displayRentalRecords();
 
 int main()
 {
@@ -53,50 +55,53 @@ void displayMenu()
 {
     int choice;
 
-
-    printf("\n=====SMART VEHICAL RENTAL SYSTEM=====\n\n\n");
-    printf("1.Register New Rental\n");
-    printf("2.Display Rental Records\n");
-    printf("3.Display Fleet Status\n");
-    printf("4.Sort Rental by Oriority\n");
-    printf("5.View reports\n");
-    printf("6.Exit\n");
-
-    printf("\nEnter your choice:");
-    scanf("%d",&choice);
-
-    switch(choice)
+    do
     {
-    case 1:
-        registerRental();
-        break;
+        printf("\n=====SMART VEHICAL RENTAL SYSTEM=====\n\n\n");
+        printf("1.Register New Rental\n");
+        printf("2.Display Rental Records\n");
+        printf("3.Display Fleet Status\n");
+        printf("4.Sort Rental by Oriority\n");
+        printf("5.View reports\n");
+        printf("6.Exit\n");
 
-    case 2:
-        printf("Display Rental Records Selected.\n");
-        break;
+        printf("\nEnter your choice:");
+        scanf("%d",&choice);
 
-    case 3:
-        printf("Display Fleet Status Selected.\n");
-        break;
+        switch(choice)
 
-    case 4:
-        printf("Sort Rentals Selected.\n");
-        break;
+        {
+          case 1:
+            registerRental();
+            break;
 
-    case 5:
-        printf("Report selected.\n");
-        break;
+          case 2:
+            displayRentalRecords();
+            break;
 
-    case 6:
-        printf("Thank you\n");
-        break;
+          case 3:
+            printf("Display Fleet Status Selected.\n");
+            break;
 
-    default:
-        printf("Invalid choice!\n");
+          case 4:
+            printf("Sort Rentals Selected.\n");
+            break;
 
+          case 5:
+            printf("Report selected.\n");
+            break;
 
-    }
+          case 6:
+            printf("Thank you\n");
+            break;
+
+          default:
+            printf("Invalid choice!\n");
+        }
+
+    }while(choice != 6);
 }
+
 
 void initializeFleet()
 {
@@ -189,5 +194,96 @@ if (vehicleFound == 0)
     return;
 }
 
+finalBills[customerCount]=
+     calculateBill(selectedCategory[customerCount],
+                   rentalDays[customerCount],
+                   driverOpted[customerCount]);
+
+printf("\nFinal Amount Payable: %.2f LKR\n",
+       finalBills[customerCount]);
+
 customerCount++;
+}
+
+double calculateBill(int category,int days,int driver)
+{
+    double baseFee;
+    double driverFee;
+    double grossCost;
+    double discount;
+    double netFee;
+    double finalAmount;
+
+
+    baseFee = days * dailyRate[category - 1];
+
+
+    if (driver == 1)
+    {
+        driverFee = days * 3500;
+    }
+    else
+    {
+        driverFee = 0;
+    }
+
+
+    grossCost = baseFee + driverFee;
+
+
+    if (days>=7)
+    {
+        discount = grossCost *0.12;
+    }
+    else
+    {
+        discount=0;
+    }
+
+    netFee = grossCost - discount;
+
+
+    finalAmount =
+          netFee + securityDeposit[category - 1];
+
+
+    return finalAmount;
+    }
+
+
+void displayRentalRecords()
+{
+    if (customerCount == 0)
+    {
+     printf("\nNo rental records available.\n");
+     return;
+    }
+
+    printf("\n========== RENTAL RECORDS ==========\n");
+
+    for (int i = 0;i< customerCount; i++)
+    {
+        printf("\n------ Rental %d -----\n",i + 1);
+
+
+        printf("Customer Name           : %s\n",customerNames[i]);
+        printf("NIC / Passport          : %s\n",nicPassport[i]);
+        printf("Driving License         : %s\n",licenseNumber[i]);
+        printf("Vehical Category        : %d\n",selectedCategory[i]);
+        printf("Rental Days             : %d\n",rentalDays[i]);
+
+
+        if (driverOpted[i] == 1)
+        {
+            printf("Driver Required         : Yes\n");
+        }
+        else
+        {
+            printf("Driver Required          : No\n");
+        }
+
+        printf("Final Amount            : %.2f LKR\n",finalBills[i]);
+    }
+
+    printf("\n=====================================\n");
 }
