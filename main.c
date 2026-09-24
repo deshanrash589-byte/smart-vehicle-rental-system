@@ -42,6 +42,7 @@ void registerRental();
 double calculateBill(int category,int days,int driver);
 void displayRentalRecords();
 void displayFleetStatus();
+void sortRentalsByPriority();
 
 int main()
 {
@@ -85,7 +86,7 @@ void displayMenu()
             break;
 
           case 4:
-            printf("Sort Rentals Selected.\n");
+            sortRentalsByPriority();
             break;
 
           case 5:
@@ -323,4 +324,119 @@ void displayFleetStatus()
     }
 
    printf("\n=====================================\n");
+}
+
+void sortRentalsByPriority()
+{
+    int i,j;
+    int tempInt;
+    double tempdouble;
+    char tempName[50];
+    char tempNic[30];
+    char tempLicense[30];
+
+    if (customerCount == 0)
+    {
+        printf("\nNo rental records available to sort.\n");
+        return;
+    }
+
+    for (i = 0;i < customerCount - 1;i++)
+    {
+        for (j =i;j <  customerCount; j++)
+        {
+            int priorityI;
+            int priorityJ;
+            int shouldSwap = 0;
+
+
+            if (selectedCategory[i] == 3)
+                priorityI = 1;
+            else if (selectedCategory[i] == 2)
+                priorityI = 2;
+            else if (selectedCategory[i] == 4)
+                priorityI = 3;
+            else
+                priorityI = 4;
+
+            if (selectedCategory[j] == 3)
+                priorityJ = 1;
+            else if (selectedCategory[j] == 2)
+                priorityJ = 2;
+            else if (selectedCategory[j] == 4)
+                priorityJ = 3;
+            else
+                priorityJ = 4;
+
+            if (priorityJ < priorityI)
+            {
+                shouldSwap = 1;
+            }
+            else if (priorityJ == priorityI &&
+                     rentalDays[j] > rentalDays[i])
+            {
+                shouldSwap = 1;
+            }
+            else if (priorityJ == priorityI &&
+                     rentalDays[j] == rentalDays[i] &&
+                     driverOpted[j] > driverOpted[i])
+            {
+                shouldSwap = 1;
+            }
+
+            if (shouldSwap)
+            {
+                snprintf(tempName,50, "%s",customerNames[i]);
+                snprintf(customerNames[i],50, "%s",customerNames[j]);
+                snprintf(customerNames[j],50, "%s",tempName);
+
+
+                snprintf(tempNic,30, "%s",nicPassport[i]);
+                snprintf(nicPassport[i],30, "%s",nicPassport[j]);
+                snprintf(nicPassport[j],30, "%s",tempNic);
+
+
+                snprintf(tempLicense, 30, "%s", licenseNumber[i]);
+                snprintf(licenseNumber[i], 30, "%s", licenseNumber[j]);
+                snprintf(licenseNumber[j], 30, "%s", tempLicense);
+
+
+                tempInt = selectedCategory[i];
+                selectedCategory[i] = selectedCategory[j];
+                selectedCategory[j] = tempInt;
+
+
+                tempInt = rentalDays[i];
+                rentalDays[i] = rentalDays[j];
+                rentalDays[j] = tempInt;
+
+                tempInt = driverOpted[i];
+                driverOpted[i] = driverOpted[j];
+                driverOpted[j] = tempInt;
+
+
+                tempdouble = finalBills[i];
+                finalBills[i] = finalBills[j];
+                finalBills[j] = tempdouble;
+
+            }
+
+        }
+    }
+
+
+    printf("\n===== RENTAL SORTED BY PRIORITY =====\n");
+
+    for (i = 0; i < customerCount; i++)
+    {
+        printf("\nRental %d\n",i + 1);
+        printf("Customer Name     : %s\n",customerNames[i]);
+        printf("Category          : %d\n",selectedCategory[i]);
+        printf("Rental Days       : %d\n",rentalDays[i]);
+
+        if (driverOpted[i] = 1)
+            printf("Driver             : Yes\n");
+        else
+            printf("Driver             : No\n");
+    }
 }
